@@ -1,7 +1,7 @@
 // Define global variables
 const playerSpeed = 4;
 const gameWidth = 800;
-const gameHeight = 600;
+const gameHeight = 608;
 const enemySpeed = 1;
 
 // collision buffers
