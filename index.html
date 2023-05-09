@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Your Game Title</title>
+    <title>copilot-game</title>
     <style>
       html {
         background-color: #1c1c1c;
@@ -20,6 +20,13 @@
         font-family: Arial, sans-serif;
         font-size: 14px;
         width: 200px;
+      }
+      #highscores-table caption {
+        background-color: #333;
+        color: #fff;
+        font-weight: normal;
+        padding: 10px;
+        text-align: center;
       }
       #highscores-table th {
         background-color: #333;
@@ -39,6 +46,18 @@
       #highscores-table tr:hover td {
         background-color: #666;
       }
+      #message {
+        display: block;
+        margin: 0 auto;
+      }
+      #message a:link,
+      #message a:visited {
+        color: #7d69ff;
+      }
+      #message a:hover,
+      #message a:active {
+        color: #4972e5;
+      }
     </style>
   </head>
   <body>
@@ -52,5 +71,8 @@
     <script>
       populateHighscoresTable();
     </script>
+    <div id="message">
+      <p>This game was by vesche + GitHub copilot! The source code is <a href="https://github.com/vesche/copilot-game">here</a>.</p>
+    </div>
   </body>
 </html>
