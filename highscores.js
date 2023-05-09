@@ -11,6 +11,10 @@ function populateHighscoresTable() {
       const top10Highscores = sortedHighscores.slice(0, 10);
       // Create an HTML table to display the highscores
       const table = document.createElement('table');
+      // Create a caption for the table
+      const caption = document.createElement('caption');
+      caption.textContent = 'Highscores';
+      table.appendChild(caption);
       // Create a header row for the table
       const headerRow = document.createElement('tr');
       const nameHeader = document.createElement('th');
