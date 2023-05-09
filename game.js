@@ -108,7 +108,7 @@ function checkCookieCollisions(x, y, width, height, munch) {
   });
 }
 
-function checkEnemiesCollisions(x, y, width, height, ouch) {
+function checkEnemiesCollisions(x, y, width, height, ouch, music) {
   // Check for collisions between the player and enemies
   enemies.getChildren().forEach(function(enemy) {
     const enemyX = enemy.x;
@@ -127,6 +127,7 @@ function checkEnemiesCollisions(x, y, width, height, ouch) {
 
         restartText.visible = true;
         alive = false;
+        music.stop();
       }
     }
   });
@@ -193,8 +194,8 @@ function create() {
   });
 
   // Add music
-  const music = this.sound.add('music', { loop: true });
-  music.play();
+  this.music = this.sound.add('music', { loop: true });
+  this.music.play();
 
   // Add sound effects
   this.munch = this.sound.add('munch');
@@ -294,7 +295,7 @@ function update() {
   checkCookieCollisions(x, y, width, height, this.munch);
 
   // Check for collisions between the player and enemies
-  checkEnemiesCollisions(x, y, width, height, this.ouch);
+  checkEnemiesCollisions(x, y, width, height, this.ouch, this.music);
 
   // Update the score text
   scoreText.setText('Score: ' + score);
