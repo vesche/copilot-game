@@ -212,29 +212,27 @@ function create() {
     // Get the user's highscore
     const username = window.prompt('Your score was ' + score + '. Enter your name to submit your highscore!');
 
-    // Check if the user cancelled the prompt
-    if (username === null) {
-      return;
+    // Send the highscores to the server if a username was entered
+    if (username !== null) {
+      // Send the highscore to the server
+      fetch('https://readme-roulette.onrender.com/boom', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: username, score: score })
+      })
+      .then(response => {
+        return response;
+      })
+      .then(data => {
+        console.log('Highscore submitted:', data);
+      })
+      .catch(error => {
+        console.error('Error submitting highscore:', error);
+      });
     }
-
-    // Send the highscore to the server
-    fetch('https://readme-roulette.onrender.com/boom', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ username: username, score: score })
-    })
-    .then(response => {
-      return response;
-    })
-    .then(data => {
-      console.log('Highscore submitted:', data);
-    })
-    .catch(error => {
-      console.error('Error submitting highscore:', error);
-    });
 
     // Restart the game
     this.scene.restart();
