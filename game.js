@@ -42,6 +42,8 @@ function preload() {
   });
   this.load.image('cookie', 'assets/cookie.png');
   this.load.audio('music', 'assets/Frost-Waltz.mp3');
+  this.load.audio('munch', 'assets/munch.wav');
+  this.load.audio('ouch', 'assets/ouch.wav');
 }
 
 // Create a function to spawn enemies
@@ -80,7 +82,7 @@ function spawnCookie() {
   cookie.setScale(0.5);
 }
 
-function checkCookieCollisions(x, y, width, height) {
+function checkCookieCollisions(x, y, width, height, munch) {
   // Check for collisions between the player and cookies
   cookies.getChildren().forEach(function(cookie) {
     const cookieX = cookie.x;
@@ -94,6 +96,8 @@ function checkCookieCollisions(x, y, width, height) {
         y + height > cookieY + cyBuffer) {
       // Destroy the cookie sprite
       cookie.destroy();
+      // Play the munch sound
+      munch.play();
       if (alive) {
         // Increase the score
         score += 1;
@@ -104,7 +108,7 @@ function checkCookieCollisions(x, y, width, height) {
   });
 }
 
-function checkEnemiesCollisions(x, y, width, height) {
+function checkEnemiesCollisions(x, y, width, height, ouch) {
   // Check for collisions between the player and enemies
   enemies.getChildren().forEach(function(enemy) {
     const enemyX = enemy.x;
@@ -117,8 +121,13 @@ function checkEnemiesCollisions(x, y, width, height) {
         y + 10 < enemyY + enemyHeight &&
         y + height > enemyY + 25) {
 
-      restartText.visible = true;
-      alive = false;
+      if (alive) {
+        // Play the ouch sound
+        ouch.play();
+
+        restartText.visible = true;
+        alive = false;
+      }
     }
   });
 }
@@ -187,6 +196,10 @@ function create() {
   const music = this.sound.add('music', { loop: true });
   music.play();
 
+  // Add sound effects
+  this.munch = this.sound.add('munch');
+  this.ouch = this.sound.add('ouch');
+
   // Add a score text object to the upper left of the screen
   scoreText = this.add.text(10, 10, 'Score: ' + score, { fontSize: '32px', fill: '#fff' });
   scoreText.setDepth(1);
@@ -199,6 +212,11 @@ function create() {
     // Get the user's highscore
     const username = window.prompt('Your score was ' + score + '. Enter your name to submit your highscore!');
 
+    // Check if the user cancelled the prompt
+    if (username === null) {
+      return;
+    }
+
     // Send the highscore to the server
     fetch('https://readme-roulette.onrender.com/boom', {
       method: 'POST',
@@ -209,10 +227,7 @@ function create() {
       body: JSON.stringify({ username: username, score: score })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
+      return response;
     })
     .then(data => {
       console.log('Highscore submitted:', data);
@@ -278,10 +293,10 @@ function update() {
   }
 
   // Check for collisions between the player and cookies
-  checkCookieCollisions(x, y, width, height);
+  checkCookieCollisions(x, y, width, height, this.munch);
 
   // Check for collisions between the player and enemies
-  checkEnemiesCollisions(x, y, width, height);
+  checkEnemiesCollisions(x, y, width, height, this.ouch);
 
   // Update the score text
   scoreText.setText('Score: ' + score);
