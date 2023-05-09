@@ -202,6 +202,7 @@ function create() {
     // Send the highscore to the server
     fetch('https://readme-roulette.onrender.com/boom', {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json'
       },
