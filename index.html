@@ -8,10 +8,49 @@
         background-color: #1c1c1c;
         color: #fff;
       }
+      #game-container {
+        float: right;
+      }
+      #highscores-table-container {
+        float: left;
+        margin-right: 20px;
+      }
+      #highscores-table {
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        width: 200px;
+      }
+      #highscores-table th {
+        background-color: #333;
+        color: #fff;
+        font-weight: normal;
+        padding: 10px;
+        text-align: left;
+      }
+      #highscores-table td {
+        background-color: #444;
+        color: #fff;
+        padding: 10px;
+      }
+      #highscores-table tr:nth-child(even) td {
+        background-color: #555;
+      }
+      #highscores-table tr:hover td {
+        background-color: #666;
+      }
     </style>
   </head>
   <body>
+    <div id="highscores-table-container">
+      <table id="highscores-table"></table>
+    </div>
+    <div id="game-container"></div>
     <script src="phaser.min.js"></script>
     <script src="game.js"></script>
+    <script src="highscores.js"></script>
+    <script>
+      populateHighscoresTable();
+    </script>
   </body>
 </html>
